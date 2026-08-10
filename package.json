@@ -1,0 +1,27 @@
+{
+  "name": "full-backend-zero",
+  "version": "1.0.0",
+  "description": "Fullstack backend zero Hoi dan IT",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node sever.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenthai19082006-coder/fullstack-Backend-zero.git"
+  },
+  "keywords": [
+    "nodejs",
+    "react"
+  ],
+  "author": "Gia Thai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenthai19082006-coder/fullstack-Backend-zero/issues"
+  },
+  "homepage": "https://github.com/nguyenthai19082006-coder/fullstack-Backend-zero#readme",
+  "dependencies": {
+    "express": "4.18.2"
+  }
+}
