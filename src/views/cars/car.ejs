@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/cars.css">
+</head>
+
+<body>
+  <h1>Danh sách xe</h1>
+  <a href="/cars/create" class="createCar">
+    Thêm xe
+  </a>
+
+  <hr>
+
+  <% cars.forEach(car => { %>
+  <p>ID: <%= car.id %></p>
+  <p>NAME: <%= car.name %></p>
+  <p>PRICE: <%= car.price.toLocaleString("vi-VN") %>đ</p>
+  <a href="/cars/updateCars/<%= car.id %>">
+    Sửa
+  </a>
+
+  <a href="/cars/delete/<%= car.id %>">
+    Xóa
+  </a>
+  <p>-------------------------------------------------</p>
+  <% }) %>
+</body>
+
+</html>

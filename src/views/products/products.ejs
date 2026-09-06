@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/products.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <form action="/products/create" method="get">
+    <button class="add-btn">Thêm Sản Phẩm</button>
+  </form>
+  <h1>Lần lượt danh sách sản phẩm là: </h1>
+  <% products.forEach(product => { %>
+  <h3>Sản phẩm <%= product.id %></h3>
+  <p>id sản phẩm: <%= product.id %></p>
+  <p>Tên sản phẩm: <a href=""> <%= product.name %> </a></p>
+  <p>Giá tiền: <%= product.price.toLocaleString("vi-VN") %>đ</p>
+  <p>Số Lượng: <%= product.quantity %></p>
+  <a href="/products/update-prd/<%= product.id %>">
+    Update
+  </a>
+  <a href="/products/delete-prd/<%= product.id %>" class="deletePrd">
+    Delete
+  </a>
+  <% }) %>
+</body>
+
+</html>

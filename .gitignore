@@ -1,2 +1,3 @@
 # File gitignore này để báo với git rằng file nào có tên trong đây thì không nên đẩy lên git
 node_modules
+.env
