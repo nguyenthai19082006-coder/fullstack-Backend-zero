@@ -1,26 +1,20 @@
-require("dotenv").config(); // lấy giá trị bên file env
+require("dotenv").config();
+const mongoose = require("mongoose");
 
-// Get the client
-const mysql = require("mysql2/promise");
+const connection = async () => {
+  try {
+    const options = {
+      user: process.env.DB_USER,
+      pass: process.env.DB_PASSWORD,
+      dbName: process.env.DB_NAME,
+    };
 
-// Create the connection to database
-// const connection = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   port: process.env.DB_PORT, //nếu không truyền tham số này thì mặc định mysql sẽ hiểu giá trị default là 3306
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-// });
-
-const connection = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT, //nếu không truyền tham số này thì mặc định mysql sẽ hiểu giá trị default là 3306
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+    await mongoose.connect(process.env.DB_HOST, options);
+    console.log("connect success");
+  } catch (error) {
+    // handleError(error); -> hàm này sẽ chứa lỗi, nếu cần dùng thì tạo hàm như này và chứa lỗi
+    console.log(">>> Error connection DB: ", error);
+  }
+};
 
 module.exports = connection;

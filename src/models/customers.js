@@ -1,0 +1,23 @@
+const mongoose = require("mongoose");
+
+// connect to Database
+const customerSchema = new mongoose.Schema(
+  {
+    // design các trường dữ liệu cần có cho document in collection (database) by schema
+    name: { type: String, require: true },
+    // address: String,
+    phone: String,
+    email: String,
+    image: String,
+    description: String,
+  },
+  // setup timestamps cho document in collection by schema
+  { timestamps: true }, // createdAt, updatedAt : khi bấm lưu hay sửa thì thông tin,
+  // thời gian của những trường này sẽ tự động cập nhật và hiển thị.
+);
+
+const Customer = mongoose.model("customer", customerSchema);
+
+module.exports = Customer;
+
+// schema: định dạng hình thức cho database.

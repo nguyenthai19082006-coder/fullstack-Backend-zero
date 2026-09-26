@@ -5,8 +5,10 @@ const {
   finishDelete,
 } = require("../services/CRUDService");
 
+const { User } = require("../models/user");
+
 const getHomepage = async (req, res) => {
-  let results = await getAllUsers();
+  let results = await User.find({});
   return res.render("home.ejs", { listUsers: results });
 };
 
@@ -24,13 +26,8 @@ const getCreateUser = (req, res) => {
 
 const getUpdateUser = async (req, res) => {
   const userID = req.params.id;
-  let [results, fields] = await connection.query(
-    `Select * from Users where id = ?`,
-    [userID],
-  );
-  console.log(results);
 
-  let user = results && results.length > 0 ? results[0] : {};
+  const user = await User.findById(userID);
 
   res.render("edit.ejs", { userEdit: user });
 };
@@ -41,8 +38,12 @@ const succeedUpdate = async (req, res) => {
   let name = req.body.myName;
   let city = req.body.myCity;
   const id = req.params.id; // lấy url động để xác nhận id
-  await finishUpdate(email, name, city, id);
 
+  await User.findByIdAndUpdate(id, {
+    email: email,
+    name: name,
+    city: city,
+  }).exec(); // update by clicked id
   res.redirect("/");
 };
 
@@ -55,28 +56,19 @@ const postCreateUser = async (req, res) => {
   let name = req.body.myName;
   let city = req.body.myCity;
 
-  // let {email, name, city} = req.body;
-  console.log(">> email =", email, ", name =", name, ", city =", city);
+  await User.create({
+    // create new a document
+    email: email,
+    name: name,
+    city: city,
+  }).exec();
 
-  let [results, fields] = await connection.query(
-    `INSERT INTO Users (email, name, city) VALUES (?, ?, ?) `,
-    [email, name, city],
-  );
-
-  console.log(">>> check result: ", results);
-
-  res.send("Created user succeed !");
-
-  // connection.query("SELECT * from Users u ", function (err, results, fields) {
-  //   console.log(">>> results = ", results); // results contains rows returned by server
-  // }
-  // )
-  // const [result, fields] = await connection.query("SELECT * from Users u ");
+  res.redirect("/");
 };
 // delete users information
 const deleteUser = async (req, res) => {
   const id = req.params.id; // get id to service
-  await finishDelete(id); // callback
+  await User.findByIdAndDelete(id).exec(); // delete by clicked id
 
   res.redirect("/"); // back to homepage
 };
