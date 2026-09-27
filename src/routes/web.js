@@ -21,14 +21,14 @@ const {
 } = require("../controllers/carControllers");
 
 // lấy dữ liệu của products
-const {
-  getProducts,
-  getCreatePrd,
-  CreatePrd,
-  updatePrd,
-  successfulUpdate,
-  succeedDeleted,
-} = require("../controllers/productsControllers");
+// const {
+//   getProducts,
+//   getCreatePrd,
+//   CreatePrd,
+//   updatePrd,
+//   successfulUpdate,
+//   succeedDeleted,
+// } = require("../controllers/productControllers");
 
 const router = express.Router();
 
@@ -50,17 +50,17 @@ router.post("/succeedUpdate/:id", succeedUpdate);
 router.post("/delete-user/:id", deleteUser);
 
 // tạo 1 route để phục vụ cho project mini về MVC
-router.get("/products", getProducts);
+// router.get("/products", getProducts);
 
-router.get("/products/create", getCreatePrd);
+// router.get("/products/create", getCreatePrd);
 
-router.post("/products/create-prd", CreatePrd);
+// router.post("/products/create-prd", CreatePrd);
 
-router.get("/products/update-prd/:id", updatePrd);
+// router.get("/products/update-prd/:id", updatePrd);
 
-router.post("/products/finishUpdate/:id", successfulUpdate);
+// router.post("/products/finishUpdate/:id", successfulUpdate);
 
-router.get("/products/delete-prd/:id", succeedDeleted);
+// router.get("/products/delete-prd/:id", succeedDeleted);
 
 // tạo 1 đường dẫn cho dự án car
 router.get("/cars", getCars);
