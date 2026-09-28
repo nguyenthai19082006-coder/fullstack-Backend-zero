@@ -4,8 +4,7 @@ const { createCustomerService } = require("../services/customerService");
 module.exports = {
   // { key : value }, viết dưới dạng object thì không cần khai báo let, var, const và phải viết dưới dạng key value
   postCreateCustomerAPI: async (req, res) => {
-
-    // 4 CÔNG ĐOẠN LÀM VIỆC TRONG CONTROLLER 
+    // 4 CÔNG ĐOẠN LÀM VIỆC TRONG CONTROLLER
 
     // Công đoạn 1: cách lấy ra data
     let { name, address, phone, email, description } = req.body;
@@ -36,5 +35,10 @@ module.exports = {
       EC: 0,
       data: customer,
     });
+  },
+
+  postCreateArrayCustomer: async (req, res) => {
+    console.log(">>> check data: ", req.body.customers);
+    res.send("create array customers");
   },
 };

@@ -13,7 +13,7 @@ const createProduct = async (products) => {
   }
 };
 
-const createFileProduct = async (imageFile) => {
+const createSingleFileProduct = async (imageFile) => {
   const uploadFile = path.join(__dirname, "../public/images/upload");
 
   // file cần có tên và timestamp
@@ -43,4 +43,57 @@ const createFileProduct = async (imageFile) => {
   }
 };
 
-module.exports = { createProduct, createFileProduct };
+const createMultipleFileProduct = async (imageArray) => {
+  try {
+    let uploadFile = path.join(__dirname, "../public/images/img");
+    let resultArr = [];
+    let countSuccess = 0;
+
+    for (let i = 0; i < imageArray.length; i++) {
+      // tạo tên
+      let extName = path.extname(imageArray[i].name);
+      let baseName = path.basename(imageArray[i].name, extName);
+
+      // nối tên
+      let finalName = `${baseName}-${Date.now()}${extName}`;
+      // gắn tên vừa nối vào đường dẫn để chốt
+      let finalPath = `${uploadFile}/${finalName}`;
+
+      // sau khi tạo xong đường dẫn chuẩn (nơi chứa file) thì giờ sẽ di chuyển dữ liệu file đã hứng bên controller vào nơi chứa
+      try {
+        await imageArray[i].mv(finalPath);
+
+        resultArr.push({
+          status: "success",
+          path: finalName,
+          fileName: imageArray[i].name,
+          error: null,
+        });
+
+        countSuccess++;
+      } catch (error) {
+        console.log(error);
+
+        resultArr.push({
+          status: "failed",
+          path: null,
+          fileName: imageArray[i].name,
+          error: JSON.stringify(error),
+        });
+      }
+    }
+
+    return {
+      countSuccess: countSuccess,
+      detail: resultArr,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  createProduct,
+  createSingleFileProduct,
+  createMultipleFileProduct,
+};
