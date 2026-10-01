@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoose_delete = require("mongoose-delete");
 
 // connect to Database
 const productSchema = new mongoose.Schema(
@@ -15,6 +16,8 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }, // createdAt, updatedAt : khi bấm lưu hay sửa thì thông tin,
   // thời gian của những trường này sẽ tự động cập nhật và hiển thị.
 );
+
+productSchema.plugin(mongoose_delete);
 
 const Product = mongoose.model("product", productSchema);
 
