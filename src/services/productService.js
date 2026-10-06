@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const path = require("path");
+const aqp = require("api-query-params").default;
 
 const createProduct = async (products) => {
   try {
@@ -92,8 +93,103 @@ const createMultipleFileProduct = async (imageArray) => {
   }
 };
 
+const getArrayProductService = async (limit, page, queryString) => {
+  try {
+    let result = "";
+
+    if (limit && page) {
+      // nếu có yếu tố phân trang thì thực thi
+      let offset = (page - 1) * limit;
+
+      // trước khi áp dụng các điều kiện để phân trang thì ta phải bóc tách từng điều kiện đó
+      // ta cần dùng hàm aqp để bóc tách
+      let { filter } = aqp(queryString);
+      delete filter.page; // vì page thêm vô để tính cho skip nên không cần vô filter
+      console.log(">>> filter: ", filter);
+
+      result = await Product.find(filter).skip(offset).limit(limit).exec();
+    } else {
+      // không có thì lấy dữ liệu thôi
+      let result = await Product.find();
+    }
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const CreateProductService = async ({ name, price, quantity }) => {
+  try {
+    let result = await Product.create({ name, price, quantity });
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const createArrayProductService = async (productArray) => {
+  try {
+    let result = await Product.insertMany(productArray);
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const updateAProductService = async (productData) => {
+  try {
+    let result = await Product.updateOne(
+      { _id: productData.id },
+      {
+        name: productData.name,
+        price: productData.price,
+        quantity: productData.quantity,
+      },
+    );
+
+    return result;
+  } catch (error) {
+    console.log(">>> error: ", error);
+    return null;
+  }
+};
+
+const deleteAProductService = async (idProduct) => {
+  try {
+    // xóa mềm (soft delete)
+    let result = await Product.deleteById(idProduct);
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const deleteArrayProductService = async (idArray) => {
+  try {
+    let result = await Product.delete({ _id: { $in: idArray } });
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 module.exports = {
   createProduct,
   createSingleFileProduct,
   createMultipleFileProduct,
+  getArrayProductService,
+  CreateProductService,
+  createArrayProductService,
+  updateAProductService,
+  deleteAProductService,
+  deleteArrayProductService,
 };

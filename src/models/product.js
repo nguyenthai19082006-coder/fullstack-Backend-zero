@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema(
   // thời gian của những trường này sẽ tự động cập nhật và hiển thị.
 );
 
-productSchema.plugin(mongoose_delete);
+productSchema.plugin(mongoose_delete, { overrideMethods: "all" });
 
 const Product = mongoose.model("product", productSchema);
 

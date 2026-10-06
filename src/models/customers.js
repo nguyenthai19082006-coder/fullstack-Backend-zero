@@ -12,9 +12,15 @@ const customerSchema = new mongoose.Schema(
     image: String,
     description: String,
   },
-  // setup timestamps cho document in collection by schema
-  { timestamps: true }, // createdAt, updatedAt : khi bấm lưu hay sửa thì thông tin,
-  // thời gian của những trường này sẽ tự động cập nhật và hiển thị.
+  {
+    timestamps: true, // setup timestamps cho document in collection by schema
+
+    // statics: {
+    //   findByGiaThai(name) {
+    //     return this.find({ name: new RegExp(name, "i") });
+    //   },
+    // },
+  },
 );
 
 // thêm thư viện plugin vào schema để thiết lập cho hình thức mà schema xây dựng,

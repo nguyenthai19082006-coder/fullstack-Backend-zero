@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/nguyenthai19082006-coder/fullstack-Backend-zero#readme",
   "dependencies": {
+    "api-query-params": "^6.1.0",
     "dotenv": "^16.0.3",
     "ejs": "3.1.8",
     "express": "4.18.2",

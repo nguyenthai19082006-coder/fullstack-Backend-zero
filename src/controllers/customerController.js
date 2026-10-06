@@ -5,10 +5,33 @@ const {
   getArrayCustomerService,
   updateCustomerService,
   deleteACustomerService,
+  deleteArrayCustomerService,
 } = require("../services/customerService");
 
 module.exports = {
   // { key : value }, viết dưới dạng object thì không cần khai báo let, var, const và phải viết dưới dạng key value
+  getArrayCustomer: async (req, res) => {
+    console.log(req.query);
+    let limit = req.query.limit;
+    let page = req.query.page;
+    let email = req.query.email;
+
+    let result = "";
+
+    if (limit && page) {
+      // nếu có limit và page thì gọi service và truyền cho service
+      result = await getArrayCustomerService(limit, page, email, req.query);
+    } else {
+      // ngược lại nếu không có thì cứ gọi service và không truyền
+      result = await getArrayCustomerService();
+    }
+
+    return res.status(200).json({
+      EC: 0,
+      data: result,
+    });
+  },
+
   postCreateCustomerAPI: async (req, res) => {
     // 4 CÔNG ĐOẠN LÀM VIỆC TRONG CONTROLLER
 
@@ -60,15 +83,6 @@ module.exports = {
     }
   },
 
-  getArrayCustomer: async (req, res) => {
-    let result = await getArrayCustomerService();
-
-    return res.status(200).json({
-      EC: 0,
-      data: result,
-    });
-  },
-
   putUpdateCustomerAPI: async (req, res) => {
     let { id, name, email } = req.body;
     let customerData = { id, name, email };
@@ -89,6 +103,16 @@ module.exports = {
     return res.status(200).json({
       EC: 0,
       data: result,
+    });
+  },
+
+  deleteArrayCustomer: async (req, res) => {
+    let customerIdArray = req.body.customersId;
+    let results = await deleteArrayCustomerService(customerIdArray);
+
+    return res.status(200).json({
+      EC: 0,
+      data: results,
     });
   },
 };
