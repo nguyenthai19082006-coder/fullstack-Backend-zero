@@ -10,16 +10,6 @@ const {
   deleteUser,
 } = require("../controllers/homeController");
 
-// lấy dữ liệu của car
-const {
-  getCars,
-  getCreate,
-  createCar,
-  updateCars,
-  finishUpdate,
-  deleteCars,
-} = require("../controllers/carControllers");
-
 // lấy dữ liệu của products
 // const {
 //   getProducts,
@@ -61,21 +51,5 @@ router.post("/delete-user/:id", deleteUser);
 // router.post("/products/finishUpdate/:id", successfulUpdate);
 
 // router.get("/products/delete-prd/:id", succeedDeleted);
-
-// tạo 1 đường dẫn cho dự án car
-router.get("/cars", getCars);
-
-// Khi truy cập URL /cars/create sẽ gọi hàm getCreate
-router.get("/cars/create", getCreate);
-
-// gửi dữ liệu đến địa chỉ /cars/create và gọi createCar ra xử lý
-router.post("/cars/create-car", createCar);
-
-// update dữ liệu car
-router.get("/cars/updateCars/:id", updateCars);
-
-router.post("/cars/finishUpdate/:id", finishUpdate);
-
-router.get("/cars/delete/:id", deleteCars);
 
 module.exports = router;

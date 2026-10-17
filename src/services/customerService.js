@@ -29,12 +29,15 @@ const getArrayCustomerService = async (limit, page, email, queryString) => {
     if (limit && page) {
       let offset = (page - 1) * limit;
 
-      const { filter } = aqp(queryString);
+      const { filter } = aqp(queryString); // những key nào được gửi tại query string từ phía client mà trùng
+      // với keyword trong thư viện aqp thì sẽ trở thành những keyword đó luôn, ví như limit, skip, sort,... dùng để điều hướng method
+      // còn nếu các key gửi vô không trùng keyword thì sẽ được chứa vào keyword filter của aqp để làm điều kiện thao tác tới database
+      // ví dụ các key như name, address áp dụng vào method find để tìm dữ liệu có name, address như key truyền vào dưới database.
       delete filter.page; // xóa thuộc tính page trong filter
       console.log(">>> check filter: ", filter);
 
       result = await Customer.find(filter).skip(offset).limit(limit).exec();
-      // collection hãy lấy giúp t dữ liệu trong db với điều kiện là bỏ qua số lượng offset tính từ vị trí đầu và lấy số lượng limit kế đó
+      // ê model (Customer) hãy truy vào database và lấy giúp t dữ liệu trong db với điều kiện trong filter và bỏ qua số lượng offset tính từ vị trí đầu và lấy số lượng limit kế đó
       // exec() giúp lệnh chuẩn xác hơn
     } else {
       result = await Customer.find({});

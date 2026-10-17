@@ -8,6 +8,8 @@ const {
   deleteArrayCustomerService,
 } = require("../services/customerService");
 
+const Joi = require("joi");
+
 module.exports = {
   // { key : value }, viết dưới dạng object thì không cần khai báo let, var, const và phải viết dưới dạng key value
   getArrayCustomer: async (req, res) => {
@@ -34,36 +36,52 @@ module.exports = {
 
   postCreateCustomerAPI: async (req, res) => {
     // 4 CÔNG ĐOẠN LÀM VIỆC TRONG CONTROLLER
-
     // Công đoạn 1: cách lấy ra data
     let { name, address, phone, email, description } = req.body;
-    let imageUrl = "";
 
-    // Công đoạn 2: cách upload file
-    if (!req.files || Object.keys(req.files).length === 0) {
-      // do nothing : không làm gì
-    } else {
-      let result = await uploadSingleFile(req.files.image);
-      imageUrl = result.path;
-      console.log(">>> check result: ", result.path);
-    }
-
-    // Công đoạn 3: gọi service để xử lý dữ liệu
-    let customerData = {
-      name,
-      address,
-      phone,
-      email,
-      description,
-      image: imageUrl,
-    };
-    let customer = await createCustomerService(customerData);
-
-    // Công đoạn 4: gửi phản hồi cho phía client
-    return res.status(200).json({
-      EC: 0,
-      data: customer,
+    // dùng thư viện Joi xây dựng khuôn mẫu xác thực
+    const schema = Joi.object({
+      name: Joi.string().alphanum().min(3).max(30).required(),
+      address: Joi.string(),
+      phone: Joi.string().pattern(new RegExp("^[0-9]{8,11}$")),
+      email: Joi.string().email(),
+      description: Joi.string(),
     });
+
+    // sau đấy dùng thư viện Joi để xác thực dữ liệu theo khuôn mẫu vừa xây dựng
+    const { error } = schema.validate(req.body); // chỉ cần 1 biến error để hứng vì chỉ cần xác thực xem dữ liệu có lỗi hay không
+    // nếu có lỗi thì dừng lại và báo lỗi cho client còn nếu không lỗi thì tiếp tục gọi service để xử lý dữ liệu
+    if (error) {
+      return error;
+    } else {
+      let imageUrl = "";
+
+      // Công đoạn 2: cách upload file
+      if (!req.files || Object.keys(req.files).length === 0) {
+        // do nothing : không làm gì
+      } else {
+        let result = await uploadSingleFile(req.files.image);
+        imageUrl = result.path;
+        // console.log(">>> check result: ", result.path);
+      }
+
+      // Công đoạn 3: gọi service để xử lý dữ liệu
+      let customerData = {
+        name,
+        address,
+        phone,
+        email,
+        description,
+        image: imageUrl,
+      };
+      let customer = await createCustomerService(customerData);
+
+      // Công đoạn 4: gửi phản hồi cho phía client
+      return res.status(200).json({
+        EC: 0,
+        data: customer,
+      });
+    }
   },
 
   postCreateArrayCustomer: async (req, res) => {
@@ -116,3 +134,7 @@ module.exports = {
     });
   },
 };
+
+// task:
+// đọc lại luồng chạy khi deploy schema để build validate data, và kích hoạt thư viện Joi validate data with schema model
+// khi cần gọi Joi để xác thực thì gọi hàm validate() để truy tới schema

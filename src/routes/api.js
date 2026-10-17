@@ -27,6 +27,20 @@ const {
   deleteArrayProduct,
 } = require("../controllers/productControllers");
 
+const {
+  postCreateTask,
+  getAllTask,
+  updateTask,
+  deleteTask,
+} = require("../controllers/taskController");
+
+const {
+  postCreateNewProject,
+  getAllProject,
+  updateAProject,
+  deleteAProject,
+} = require("../controllers/projectController");
+
 const routerAPI = express.Router();
 
 // User
@@ -82,5 +96,23 @@ routerAPI.get("/info/:name/:address", (req, res) => {
     data: req.params,
   });
 });
+
+// task
+routerAPI.post("/tasks", postCreateTask);
+
+routerAPI.get("/tasks", getAllTask);
+
+routerAPI.put("/tasks", updateTask);
+
+routerAPI.delete("/tasks", deleteTask);
+
+// project
+routerAPI.post("/projects", postCreateNewProject);
+
+routerAPI.get("/projects", getAllProject);
+
+routerAPI.put("/projects", updateAProject);
+
+routerAPI.delete("/projects", deleteAProject);
 
 module.exports = routerAPI;
