@@ -14,8 +14,8 @@ const port = process.env.PORT || 8888; // để chạy được cần khai báo 
 const hostname = process.env.HOST_NAME; // truy cập vào bộ nhớ env và lấy ra giá trị của biến HOST_NAME, mọi giá trị đều là chuỗi.
 
 // config file upload
-  app.use(fileUpload());  // check xem client có gửi request kèm dữ liệu file,... tới không, nếu có thì hứng lấy những file đó và cất vào req.files
-  // để khi server có cần lấy thì sẽ query tới req.file để sử dụng.
+app.use(fileUpload()); // check xem client có gửi request kèm dữ liệu file,... tới không, nếu có thì hứng lấy những file đó và cất vào req.files
+// để khi server có cần lấy thì sẽ query tới req.file để sử dụng.
 
 // config req.body
 app.use(express.json()); // for json
