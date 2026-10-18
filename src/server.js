@@ -39,7 +39,7 @@ app.use("/v1/api/", apiRoutes); // URL dành cho api (dữ liệu bên server)
     // test connection
     await connection();
 
-    app.listen(port, hostname, () => {
+    app.listen(port, "0.0.0.0", () => {
       console.log(`Backend zero app listening on port ${port}`);
     });
   } catch (error) {
